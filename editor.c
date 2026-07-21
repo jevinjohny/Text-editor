@@ -6,9 +6,9 @@ void init_editor(texteditor *editor)
 
     editor->tail = NULL;
 
-    editor->line = NULL;
+    editor->cur_line = NULL;
 
-    editor->lineno = 0;
+    editor->cur_lineno = 0;
 
-    editor->pos = 0;
+    editor->cur_pos = 0;
 }

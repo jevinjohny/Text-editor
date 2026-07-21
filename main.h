@@ -1,9 +1,11 @@
+#ifndef MAIN_H
+#define MAIN_H
 #include <stdio.h>
 #define MAXLEN 1024
-typedef struct
+typedef struct node
 {
-    struct node *head;
-    struct node *tail;
+    struct node *prev;
+    struct node *next;
     char line[MAXLEN];
 
 }node;
@@ -13,11 +15,13 @@ typedef struct
     node *head;
     node *tail;
 
-    node *line;
+    node *cur_line;
 
-    int lineno;
-    int pos;
+    int cur_lineno;
+    int cur_pos;
 
 }texteditor;
 
 void init_editor(texteditor *ptr_editor);
+
+#endif
