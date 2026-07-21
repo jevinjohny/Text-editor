@@ -1,6 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include <stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #define MAXLEN 1024
 typedef struct node
 {
@@ -23,5 +25,7 @@ typedef struct
 }texteditor;
 
 void init_editor(texteditor *ptr_editor);
+
+node *create_node(const char *text);
 
 #endif

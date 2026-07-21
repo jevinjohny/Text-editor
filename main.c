@@ -6,5 +6,4 @@ int main()
 
     init_editor(&editor);
 
-    
 }
