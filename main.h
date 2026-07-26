@@ -28,4 +28,8 @@ void init_editor(texteditor *ptr_editor);
 
 node *create_node(const char *text);
 
+void insert_line(texteditor *editor);
+
+void display_editor(texteditor *editor);
+
 #endif
