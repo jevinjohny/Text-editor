@@ -34,4 +34,8 @@ void display_editor(texteditor *editor);
 
 void delete_line(texteditor *editor);
 
+void move_up(texteditor *editor);
+
+void move_down(texteditor *editor);
+
 #endif

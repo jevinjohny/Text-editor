@@ -12,9 +12,9 @@ int main()
     {
         printf("Text Editor Commands\n");
 
-        printf("1. insert\n2. delete\n3. undo\n4. redo\n5. print\n6. exit\n");
+        printf("1. insert\n2. delete\n3. undo\n4. redo\n5. print\n6. move up\n7. move down\n8. exit\n");
 
-        scanf("%d",&option);
+        scanf("%d", &option);
 
         switch (option)
         {
@@ -29,6 +29,16 @@ int main()
             break;
         }
         case 6:
+        {
+            move_up(&editor);
+            break;
+        }
+        case 7:
+        {
+            move_down(&editor);
+            break;
+        }
+        case 8:
         {
             return 0;
         }

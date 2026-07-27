@@ -91,7 +91,10 @@ void display_editor(texteditor *editor)
 
     while (temp)
     {
-        printf("%2d | %s\n", line++, temp->line);
+        if (temp == editor->cur_line)
+            printf(">%3d | %s\n", line++, temp->line);
+        else
+            printf("%4d | %s\n", line++, temp->line);
 
         temp = temp->next;
     }
@@ -157,4 +160,30 @@ void delete_line(texteditor *editor)
 
         free(temp);
     }
+}
+
+void move_up(texteditor *editor)
+{
+    if (editor->cur_lineno >= 2)
+    {
+        node *temp = editor->cur_line;
+
+        editor->cur_line = temp->prev;
+
+        editor->cur_lineno--;
+    }
+    display_editor(editor);
+}
+
+void move_down(texteditor *editor)
+{
+    if (editor->cur_line != editor->tail)
+    {
+        node *temp = editor->cur_line;
+        
+        editor->cur_line = temp->next;
+        
+        editor->cur_lineno++;
+    }
+    display_editor(editor);
 }
