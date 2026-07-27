@@ -224,3 +224,30 @@ void move_down(texteditor *editor)
     }
     display_editor(editor);
 }
+
+void save_file (texteditor *editor)
+{
+    if (editor->head==NULL)
+    {
+        printf("Text is empty , Nothing to save\n");
+        return;
+    }
+    FILE *fp=fopen("sample.txt","w");
+
+    if (fp==NULL)
+    {
+        printf("file failed to open\n");
+
+        return;
+    }
+    node *temp=editor->head;
+
+    while (temp)
+    {
+        fprintf(fp,"%s\n",temp->line);
+
+        temp=temp->next;
+    }
+    fclose(fp);
+    printf("\nFile saved succesfully\n");
+}
