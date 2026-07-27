@@ -46,7 +46,7 @@ void insert_line(texteditor *editor)
         return;
     }
 
-    if (editor->head == NULL)
+    if (editor->cur_line == NULL)
     {
         editor->head = new;
 
@@ -60,19 +60,36 @@ void insert_line(texteditor *editor)
 
         return;
     }
-    node *temp = editor->tail;
+    node *temp = editor->cur_line;
 
-    temp->next = new;
+    if (temp == editor->tail)
+    {
+        temp->next = new;
 
-    new->prev = temp;
+        new->prev = temp;
 
-    editor->tail = new;
+        editor->tail = new;
 
-    editor->cur_line = new;
+        editor->cur_line = new;
 
-    editor->cur_lineno++;
+        editor->cur_lineno++;
 
-    editor->cur_pos = 0;
+        editor->cur_pos = 0;
+    }
+    else
+    {
+        new->next = temp->next;
+
+        temp->next = new;
+
+        new->prev = temp;
+
+        editor->cur_line = new;
+
+        editor->cur_lineno++;
+
+        editor->cur_pos = 0;
+    }
 
     return;
 }
@@ -180,9 +197,9 @@ void move_down(texteditor *editor)
     if (editor->cur_line != editor->tail)
     {
         node *temp = editor->cur_line;
-        
+
         editor->cur_line = temp->next;
-        
+
         editor->cur_lineno++;
     }
     display_editor(editor);
