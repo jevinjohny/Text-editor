@@ -45,7 +45,7 @@ void insert_line(texteditor *editor)
         printf("Memory allocation failed\n");
         return;
     }
-    
+
     if (editor->head == NULL)
     {
         editor->head = new;
@@ -69,7 +69,7 @@ void insert_line(texteditor *editor)
     editor->tail = new;
 
     editor->cur_line = new;
-    
+
     editor->cur_lineno++;
 
     editor->cur_pos = 0;
@@ -85,13 +85,76 @@ void display_editor(texteditor *editor)
         return;
     }
 
-    node *temp =editor->head;
+    node *temp = editor->head;
+
+    int line = 1;
 
     while (temp)
     {
-        printf("%s\n",temp->line);
+        printf("%2d | %s\n", line++, temp->line);
 
-        temp=temp->next;
+        temp = temp->next;
+    }
+}
+
+void delete_line(texteditor *editor)
+{
+    if (editor->head == NULL)
+    {
+        printf("text is empty\n");
+        return;
     }
 
+    if (editor->head == editor->tail)
+    {
+        free(editor->head);
+
+        init_editor(editor);
+
+        return;
+    }
+
+    node *temp = editor->cur_line;
+
+    // delete the last line
+    if (editor->tail == editor->cur_line)
+    {
+        (temp->prev)->next = NULL;
+
+        editor->tail = temp->prev;
+
+        editor->cur_line = temp->prev;
+
+        editor->cur_lineno--;
+
+        editor->cur_pos = 0;
+
+        free(temp);
+    }
+    else if (editor->cur_line == editor->head)
+    {
+        (temp->next)->prev = NULL;
+
+        editor->head = temp->next;
+
+        editor->cur_line = temp->next;
+
+        editor->cur_lineno = 1;
+
+        editor->cur_pos = 0;
+
+        free(temp);
+    }
+    else
+    {
+        (temp->prev)->next = temp->next;
+
+        (temp->next)->prev = temp->prev;
+
+        editor->cur_line = temp->next;
+
+        editor->cur_pos = 0;
+
+        free(temp);
+    }
 }

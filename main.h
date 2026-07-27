@@ -32,4 +32,6 @@ void insert_line(texteditor *editor);
 
 void display_editor(texteditor *editor);
 
+void delete_line(texteditor *editor);
+
 #endif
