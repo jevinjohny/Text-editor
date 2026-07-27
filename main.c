@@ -15,12 +15,19 @@ int main()
         printf("1. insert\n2. delete\n3. undo\n4. redo\n5. print\n6. move up\n7. move down\n8. exit\n");
 
         scanf("%d", &option);
+        
+        char input[MAXLEN];
 
         switch (option)
         {
         case 1:
         {
-            insert_line(&editor);
+            insert_line(&editor, input_text(input));
+            break;
+        }
+        case 2:
+        {
+            delete_line(&editor);
             break;
         }
         case 5:
@@ -40,6 +47,7 @@ int main()
         }
         case 8:
         {
+            free_editor(&editor);
             return 0;
         }
         }

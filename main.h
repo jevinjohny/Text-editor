@@ -28,7 +28,9 @@ void init_editor(texteditor *ptr_editor);
 
 node *create_node(const char *text);
 
-void insert_line(texteditor *editor);
+char *input_text(char *input);
+
+void insert_line(texteditor *editor,const char *text);
 
 void display_editor(texteditor *editor);
 

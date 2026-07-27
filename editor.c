@@ -30,15 +30,18 @@ node *create_node(const char *text)
     return new;
 }
 
-void insert_line(texteditor *editor)
+char *input_text(char *input)
 {
     printf("enter the line\n");
 
-    char input[MAXLEN];
-
     scanf(" %[^\n]", input);
 
-    node *new = create_node(input);
+    return input;
+}
+
+void insert_line(texteditor *editor,const char *text)
+{
+    node *new = create_node(text);
 
     if (!new)
     {
