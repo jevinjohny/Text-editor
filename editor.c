@@ -182,6 +182,23 @@ void delete_line(texteditor *editor)
     }
 }
 
+void free_editor(texteditor *editor)
+{
+    node *temp=editor->tail;
+
+    while(temp)
+    {
+        node *pre=temp->prev;
+
+        free(temp);
+
+        temp=pre;
+    }
+
+    init_editor(editor);
+
+}
+
 void move_up(texteditor *editor)
 {
     if (editor->cur_lineno >= 2)
