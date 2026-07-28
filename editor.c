@@ -251,3 +251,25 @@ void save_file (texteditor *editor)
     fclose(fp);
     printf("\nFile saved succesfully\n");
 }
+
+void openfile(texteditor *editor)
+{
+    //open the file
+    FILE *fp=fopen("sample.txt","r");
+
+    if (fp==NULL)
+    {
+        printf("file failed to open\n");
+        
+        return;
+    }
+
+    init_editor(editor);
+
+    //read line by line from the file using fgets or fread
+
+    //insert using insert line function
+
+    //close file
+    fclose(fp);
+}
