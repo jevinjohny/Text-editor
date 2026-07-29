@@ -252,7 +252,7 @@ void save_file (texteditor *editor)
     printf("\nFile saved succesfully\n");
 }
 
-void openfile(texteditor *editor)
+void open_file(texteditor *editor)
 {
     //open the file
     FILE *fp=fopen("sample.txt","r");
@@ -264,12 +264,18 @@ void openfile(texteditor *editor)
         return;
     }
 
-    init_editor(editor);
+    //free already allocated memory and initialises
+    free_editor(editor);
 
-    //read line by line from the file using fgets or fread
-
-    //insert using insert line function
-
+    //read line by line from the file
+    char line[MAXLEN];
+    
+    while (fgets(line,MAXLEN,fp))
+    {
+        line[strcspn(line,"\n")]='\0';
+        //insert using insert line function
+        insert_line(editor,line);
+    }
     //close file
     fclose(fp);
 }

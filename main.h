@@ -44,4 +44,6 @@ void move_down(texteditor *editor);
 
 void save_file (texteditor *editor);
 
+void open_file(texteditor *editor);
+
 #endif
