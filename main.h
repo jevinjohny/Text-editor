@@ -22,6 +22,8 @@ typedef struct
     int cur_lineno;
     int cur_pos;
 
+    char clipboard[MAXLEN];
+
 }texteditor;
 
 void init_editor(texteditor *ptr_editor);
@@ -31,6 +33,10 @@ node *create_node(const char *text);
 char *input_text(char *input);
 
 void insert_line(texteditor *editor,const char *text);
+
+void copy(texteditor *editor);
+
+void paste(texteditor *editor);
 
 void insert_text(texteditor *editor,const char *text);
 

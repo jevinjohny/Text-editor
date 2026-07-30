@@ -358,4 +358,27 @@ void open_file(texteditor *editor)
 void close_file(texteditor *editor)
 {
     free_editor(editor);
+    printf("File closed\n");
+}
+
+void copy(texteditor *editor)
+{
+    if (editor->cur_line==NULL)
+    {
+        printf("Nothing to copy\n");
+        return;
+    }
+    strcpy(editor->clipboard,(editor->cur_line)->line);
+}
+
+void paste(texteditor *editor)
+{
+    if (strlen(editor->clipboard)==0)
+    {
+        printf("Clipboard is empty\n");
+        return;
+    }
+    insert_line(editor,editor->clipboard);
+
+    display_editor(editor);
 }
