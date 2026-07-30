@@ -32,6 +32,8 @@ char *input_text(char *input);
 
 void insert_line(texteditor *editor,const char *text);
 
+void insert_text(texteditor *editor,const char *text);
+
 void display_editor(texteditor *editor);
 
 void delete_line(texteditor *editor);
@@ -41,6 +43,10 @@ void free_editor(texteditor *editor);
 void move_up(texteditor *editor);
 
 void move_down(texteditor *editor);
+
+void move_left(texteditor *editor);
+
+void move_right(texteditor *editor);
 
 void save_file (texteditor *editor);
 
