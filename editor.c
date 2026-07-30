@@ -252,7 +252,23 @@ void free_editor(texteditor *editor)
         temp=pre;
     }
 
+    free_stack(&editor->undo_stack);
+
+    free_stack(&editor->redo_stack);
+
     init_editor(editor);
+
+}
+
+void free_stack(DynamicArrayStack *stack)
+{
+    free(stack->actions);
+
+    stack->actions=NULL;
+
+    stack->size=0;
+
+    stack->capacity=0;
 
 }
 

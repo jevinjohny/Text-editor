@@ -30,6 +30,16 @@ int main()
             delete_line(&editor);
             break;
         }
+        case 3:
+        {
+            // undo(&editor);
+            break;
+        }
+        case 4:
+        {
+            // redo(&editor);
+            break;
+        }
         case 5:
         {
             display_editor(&editor);
