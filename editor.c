@@ -354,3 +354,8 @@ void open_file(texteditor *editor)
     //close file
     fclose(fp);
 }
+
+void close_file(texteditor *editor)
+{
+    free_editor(editor);
+}

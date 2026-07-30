@@ -52,4 +52,5 @@ void save_file (texteditor *editor);
 
 void open_file(texteditor *editor);
 
+void close_file(texteditor *editor);
 #endif

@@ -72,6 +72,11 @@ int main()
         }
         case 13:
         {
+            close_file(&editor);
+            break;
+        }
+        case 14:
+        {
             free_editor(&editor);
             return 0;
         }
