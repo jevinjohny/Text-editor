@@ -67,7 +67,7 @@ int main()
         }
         case 12:
         {
-            insert_line(&editor, input_text(input));
+            insert_text(&editor, input_text(input));
             break;
         }
         case 13:

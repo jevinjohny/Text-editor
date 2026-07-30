@@ -11,6 +11,10 @@ void init_editor(texteditor *editor)
     editor->cur_lineno = 0;
 
     editor->cur_pos = 0;
+
+    init_stack(&editor->undo_stack);
+
+    init_stack(&editor->redo_stack);
 }
 
 node *create_node(const char *text)
@@ -381,4 +385,19 @@ void paste(texteditor *editor)
     insert_line(editor,editor->clipboard);
 
     display_editor(editor);
+}
+
+void init_stack(DynamicArrayStack *stack)
+{
+    stack->size=0;
+
+    stack->capacity=10;
+
+    stack->actions=malloc(stack->capacity * sizeof(Action));
+
+    if (stack->actions==NULL)
+    {
+        printf("Memory allocations failed\n");
+        return ;
+    }
 }
