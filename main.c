@@ -28,6 +28,7 @@ int main()
         }
         case 2:
         {
+            editor.redo_stack.size=0;
             delete_line(&editor,NORMAL);
             break;
         }

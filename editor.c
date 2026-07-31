@@ -172,18 +172,18 @@ void undo(texteditor *editor)
     }
     else if (action.operation == DELETE_LINE)
     {
+        if (action.cursorLine == 1)
+        {
+            insert_atfirst(editor, action.text);
+
+            push(&editor->redo_stack, action);
+
+            return;
+        }
         int i = 1;
         while (temp)
         {
-            if (i == action.cursorLine)
-            {
-                insert_atfirst(editor, action.text);
-
-                push(&editor->redo_stack, action);
-
-                return;
-            }
-            else if (i == action.cursorLine - 1)
+            if (i == action.cursorLine - 1)
             {
                 editor->cur_line = temp;
 
@@ -249,9 +249,43 @@ void redo(texteditor *editor)
 
     if (action.operation == INSERT_LINE)
     {
+        if (action.cursorLine == 1)
+        {
+            insert_atfirst(editor, action.text);
+
+            push(&editor->undo_stack, action);
+
+            return;
+        }
+
         node *temp = editor->head;
 
         int i = 1;
+        while (temp)
+        {
+            if (i == action.cursorLine-1)
+            {
+                editor->cur_line = temp;
+
+                editor->cur_lineno = action.cursorLine-1;
+
+                editor->cur_pos = action.cursorPos;
+
+                break;
+            }
+            temp = temp->next;
+            i++;
+        }
+        
+        insert_line(editor, action.text, DNR);
+
+        push(&editor->undo_stack, action);
+    }
+    else if (action.operation == DELETE_LINE)
+    {
+        node *temp = editor->head;
+        int i = 1;
+
         while (temp)
         {
             if (i == action.cursorLine)
@@ -262,14 +296,21 @@ void redo(texteditor *editor)
 
                 editor->cur_pos = action.cursorPos;
 
-                break;
+                delete_line(editor, DNR);
+
+                push(&editor->undo_stack, action);
+
+                return;
             }
             temp = temp->next;
+
             i++;
         }
-        push(&editor->undo_stack, action);
-
-        insert_line(editor, action.text, DNR);
+        // printf("Redo delete:\n");
+        // printf("Stored cursorLine = %d\n", action.cursorLine);
+        // printf("Deleting line %d: %s\n",
+        //        editor->cur_lineno,
+        //        editor->cur_line->line);
     }
 }
 
