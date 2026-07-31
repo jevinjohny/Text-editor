@@ -12,7 +12,7 @@ int main()
     {
         printf("Text Editor Commands\n");
 
-        printf("1. insert new line\n2. delete\n3. undo\n4. redo\n5. print\n6. move up\n7. move down\n8. move left\n9. move right\n10. open\n11. save\n12. insert text\n13. close file\n14. copy\n15. paste\n16. exit\n");
+        // printf("1. insert new line\n2. delete\n3. undo\n4. redo\n5. print\n6. move up\n7. move down\n8. move left\n9. move right\n10. open\n11. save\n12. insert text\n13. close file\n14. copy\n15. paste\n16. exit\n");
 
         scanf("%d", &option);
         
@@ -22,22 +22,23 @@ int main()
         {
         case 1:
         {
-            insert_line(&editor, input_text(input));
+            editor.redo_stack.size=0;
+            insert_line(&editor, input_text(input),NORMAL);
             break;
         }
         case 2:
         {
-            delete_line(&editor);
+            delete_line(&editor,NORMAL);
             break;
         }
         case 3:
         {
-            // undo(&editor);
+            undo(&editor);
             break;
         }
         case 4:
         {
-            // redo(&editor);
+            redo(&editor);
             break;
         }
         case 5:
