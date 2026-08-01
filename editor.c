@@ -34,6 +34,33 @@ node *create_node(const char *text)
     return new;
 }
 
+void display_editor(texteditor *editor)
+{
+    if (editor->head == NULL)
+    {
+        printf("text is empty\n");
+        return;
+    }
+
+    node *temp = editor->head;
+
+    int line = 1;
+
+    while (temp)
+    {
+        if (temp == editor->cur_line)
+        {
+            printf(">%3d : %s\n", line++, temp->line);
+            printf("%*c\n",editor->cur_pos+7,'^');
+        }
+        else
+            printf("%4d : %s\n", line++, temp->line);
+
+        temp = temp->next;
+    }
+    printf("Cursor position : Line %d , coloumn %d\n",editor->cur_lineno,editor->cur_pos);
+}
+
 char *input_text(char *input)
 {
     printf("enter the line\n");
@@ -263,11 +290,11 @@ void redo(texteditor *editor)
         int i = 1;
         while (temp)
         {
-            if (i == action.cursorLine-1)
+            if (i == action.cursorLine - 1)
             {
                 editor->cur_line = temp;
 
-                editor->cur_lineno = action.cursorLine-1;
+                editor->cur_lineno = action.cursorLine - 1;
 
                 editor->cur_pos = action.cursorPos;
 
@@ -276,7 +303,7 @@ void redo(texteditor *editor)
             temp = temp->next;
             i++;
         }
-        
+
         insert_line(editor, action.text, DNR);
 
         push(&editor->undo_stack, action);
@@ -363,28 +390,28 @@ void insert_text(texteditor *editor, const char *text)
     return;
 }
 
-void display_editor(texteditor *editor)
+void backspace(texteditor *editor, int mode)
 {
-    if (editor->head == NULL)
+    while (getchar() != '\n')
+        ;
+
+    int no_of_char;
+
+    scanf("%d", &no_of_char);
+
+    while (getchar() != '\n')
+        ;
+
+    node *temp = editor->cur_line;
+
+    int linelen = strlen(temp->line);
+
+    if (editor->cur_pos - no_of_char+1 >0)
     {
-        printf("text is empty\n");
-        return;
+        memmove((temp->line) + (editor->cur_pos) - no_of_char, (temp->line) + (editor->cur_pos), linelen - editor->cur_pos+1);
+
+        editor->cur_pos -= no_of_char;
     }
-
-    node *temp = editor->head;
-
-    int line = 1;
-
-    while (temp)
-    {
-        if (temp == editor->cur_line)
-            printf(">%3d : %s\n", line++, temp->line);
-        else
-            printf("%4d : %s\n", line++, temp->line);
-
-        temp = temp->next;
-    }
-    printf("Cursor position : Line %d , coloumn %d\n", editor->cur_lineno, editor->cur_pos);
 }
 
 void delete_line(texteditor *editor, int mode)
@@ -504,7 +531,6 @@ void move_up(texteditor *editor)
 
         editor->cur_lineno--;
     }
-    display_editor(editor);
 }
 
 void move_down(texteditor *editor)
@@ -517,7 +543,6 @@ void move_down(texteditor *editor)
 
         editor->cur_lineno++;
     }
-    display_editor(editor);
 }
 
 void move_left(texteditor *editor)
@@ -528,7 +553,6 @@ void move_left(texteditor *editor)
 
         editor->cur_pos--;
     }
-    display_editor(editor);
 }
 
 void move_right(texteditor *editor)
@@ -539,7 +563,6 @@ void move_right(texteditor *editor)
     {
         editor->cur_pos++;
     }
-    display_editor(editor);
 }
 
 void save_file(texteditor *editor)
@@ -622,8 +645,6 @@ void paste(texteditor *editor)
         return;
     }
     insert_line(editor, editor->clipboard, DNR);
-
-    display_editor(editor);
 }
 
 void init_stack(DynamicArrayStack *stack)

@@ -5,9 +5,9 @@
 #include <string.h>
 #define MAXLEN 1024
 
-//modes
+// modes
 #define NORMAL 1
-#define DNR     0
+#define DNR 0
 
 #define INSERT_LINE 1
 #define DELETE_LINE 2
@@ -60,7 +60,7 @@ node *create_node(const char *text);
 
 char *input_text(char *input);
 
-void insert_line(texteditor *editor, const char *text,int mode);
+void insert_line(texteditor *editor, const char *text, int mode);
 
 void insert_atfirst(texteditor *editor, const char *text);
 
@@ -70,9 +70,11 @@ void paste(texteditor *editor);
 
 void insert_text(texteditor *editor, const char *text);
 
+void backspace(texteditor *editor, int mode);
+
 void display_editor(texteditor *editor);
 
-void delete_line(texteditor *editor,int mode);
+void delete_line(texteditor *editor, int mode);
 
 void free_editor(texteditor *editor);
 
