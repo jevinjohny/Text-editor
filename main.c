@@ -186,8 +186,6 @@ int main()
             // system("clear");
 
             display_editor(&editor);
-
-            return 0;
         }
         case 17:
         {
@@ -204,6 +202,8 @@ int main()
         {
             return 0;
         }
+        default:
+            printf("Invalid input\n");
         }
     }
 }

@@ -88,12 +88,12 @@ int command_handler(char *input)
     else if (strcmp(token, "paste") == 0)
     {
         strcpy(input, strtok(NULL, ""));
-        
+
         return 15;
     }
     else if (strcmp(token, "free") == 0)
     {
-        
+
         return 16;
     }
     else if (strcmp(token, "delete") == 0)
@@ -106,6 +106,10 @@ int command_handler(char *input)
     {
 
         return 18;
+    }
+    else
+    {
+        return -1;
     }
 }
 
