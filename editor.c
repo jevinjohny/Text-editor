@@ -1,5 +1,114 @@
 #include "main.h"
 
+int command_handler(char *input)
+{
+    char *token = strtok(input, " ");
+
+    if (token == NULL)
+    {
+        return 0;
+    }
+
+    if (strcmp(token, "insert_line") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 1;
+    }
+    else if (strcmp(token, "delete_line") == 0)
+    {
+        return 2;
+    }
+    else if (strcmp(token, "undo") == 0)
+    {
+        return 3;
+    }
+    else if (strcmp(token, "redo") == 0)
+    {
+        return 4;
+    }
+    else if (strcmp(token, "print") == 0)
+    {
+        return 5;
+    }
+    else if (strcmp(token, "moveup") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 6;
+    }
+    else if (strcmp(token, "movedown") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 7;
+    }
+    else if (strcmp(token, "moveleft") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 8;
+    }
+    else if (strcmp(token, "moveright") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 9;
+    }
+    else if (strcmp(token, "open") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 10;
+    }
+    else if (strcmp(token, "save") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 11;
+    }
+    else if (strcmp(token, "insert") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 12;
+    }
+    else if (strcmp(token, "close") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 13;
+    }
+    else if (strcmp(token, "copy") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 14;
+    }
+    else if (strcmp(token, "paste") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+        
+        return 15;
+    }
+    else if (strcmp(token, "free") == 0)
+    {
+        
+        return 16;
+    }
+    else if (strcmp(token, "delete") == 0)
+    {
+        strcpy(input, strtok(NULL, ""));
+
+        return 17;
+    }
+    else if (strcmp(token, "exit") == 0)
+    {
+
+        return 18;
+    }
+}
+
 void init_editor(texteditor *editor)
 {
     editor->head = NULL;
@@ -458,7 +567,7 @@ void insert_text(texteditor *editor, const char *text, int mode)
 
         editor->cur_lineno = 1;
 
-        editor->cur_pos = 0;
+        editor->cur_pos = strlen(new->line);
 
         return;
     }
@@ -636,58 +745,94 @@ void free_stack(DynamicArrayStack *stack)
     stack->capacity = 0;
 }
 
-void move_up(texteditor *editor)
+void move_up(texteditor *editor, int val)
 {
-    if (editor->cur_lineno >= 2)
+    int i = 0;
+    while (i < val)
     {
-        node *temp = editor->cur_line;
+        if (editor->cur_lineno >= 2)
+        {
+            node *temp = editor->cur_line;
 
-        editor->cur_line = temp->prev;
+            editor->cur_line = temp->prev;
 
-        editor->cur_lineno--;
+            editor->cur_lineno--;
+        }
+        else
+        {
+            break;
+        }
+        i++;
     }
 }
 
-void move_down(texteditor *editor)
+void move_down(texteditor *editor, int val)
 {
-    if (editor->cur_line != editor->tail)
+    int i = 0;
+    while (i < val)
     {
-        node *temp = editor->cur_line;
+        if (editor->cur_line != editor->tail)
+        {
+            node *temp = editor->cur_line;
 
-        editor->cur_line = temp->next;
+            editor->cur_line = temp->next;
 
-        editor->cur_lineno++;
+            editor->cur_lineno++;
+        }
+        else
+        {
+            break;
+        }
+        i++;
     }
 }
 
-void move_left(texteditor *editor)
+void move_left(texteditor *editor, int val)
 {
-    if (editor->cur_pos != 0)
+    int i = 0;
+    while (i < val)
     {
-        node *temp = editor->cur_line;
+        if (editor->cur_pos != 0)
+        {
+            node *temp = editor->cur_line;
 
-        editor->cur_pos--;
+            editor->cur_pos--;
+        }
+        else
+        {
+            break;
+        }
+        i++;
     }
 }
 
-void move_right(texteditor *editor)
+void move_right(texteditor *editor, int val)
 {
     node *temp = editor->cur_line;
 
-    if (editor->cur_pos < strlen(temp->line))
+    int i = 0;
+    while (i < val)
     {
-        editor->cur_pos++;
+        if (editor->cur_pos < strlen(temp->line))
+        {
+            editor->cur_pos++;
+        }
+        else
+        {
+            break;
+        }
+        i++;
     }
 }
 
-void save_file(texteditor *editor)
+void save_file(texteditor *editor, char *input)
 {
     if (editor->head == NULL)
     {
         printf("Text is empty , Nothing to save\n");
         return;
     }
-    FILE *fp = fopen("sample.txt", "w");
+    FILE *fp = fopen(input, "w");
 
     if (fp == NULL)
     {
@@ -707,10 +852,10 @@ void save_file(texteditor *editor)
     printf("\nFile saved succesfully\n");
 }
 
-void open_file(texteditor *editor)
+void open_file(texteditor *editor, char *input)
 {
     // open the file
-    FILE *fp = fopen("sample.txt", "r");
+    FILE *fp = fopen(input, "r");
 
     if (fp == NULL)
     {
@@ -735,7 +880,7 @@ void open_file(texteditor *editor)
     fclose(fp);
 }
 
-void close_file(texteditor *editor)
+void close_file(texteditor *editor, char *input)
 {
     free_editor(editor);
 

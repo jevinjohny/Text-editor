@@ -13,20 +13,27 @@ int main()
 
     while (1)
     {
-        // printf("1. insert new line 2. delete 3. undo 4. redo 5. print 6. move up 7. move down 8. move left 9. move right 10. open 11. save 12. insert text 13. close file 14. copy 15. paste 16. exit 17.backspace\n");
 
-        printf("Text Editor Commands\n");
-
-        scanf("%d", &option);
+        printf("Enter command: ");
 
         char input[MAXLEN];
 
+        fgets(input, MAXLEN, stdin);
+
+        input[strcspn(input, "\n")] = '\0';
+
+        option = command_handler(input);
+
         switch (option)
         {
+        case 0:
+        {
+            break;
+        }
         case 1:
         {
             editor.redo_stack.size = 0;
-            insert_line(&editor, input_text(input), NORMAL);
+            insert_line(&editor, input, NORMAL);
 
             // system("clear");
 
@@ -72,7 +79,9 @@ int main()
         }
         case 6:
         {
-            move_up(&editor);
+            int val = atoi(input);
+
+            move_up(&editor, val);
 
             // system("clear");
 
@@ -82,7 +91,9 @@ int main()
         }
         case 7:
         {
-            move_down(&editor);
+            int val = atoi(input);
+
+            move_down(&editor, val);
 
             // system("clear");
 
@@ -92,7 +103,9 @@ int main()
         }
         case 8:
         {
-            move_left(&editor);
+            int val = atoi(input);
+
+            move_left(&editor, val);
 
             // system("clear");
 
@@ -102,7 +115,9 @@ int main()
         }
         case 9:
         {
-            move_right(&editor);
+            int val = atoi(input);
+
+            move_right(&editor, val);
 
             // system("clear");
 
@@ -112,7 +127,7 @@ int main()
         }
         case 10:
         {
-            open_file(&editor);
+            open_file(&editor, input);
 
             // system("clear");
 
@@ -122,7 +137,7 @@ int main()
         }
         case 11:
         {
-            save_file(&editor);
+            save_file(&editor, input);
 
             // system("clear");
 
@@ -130,7 +145,7 @@ int main()
         }
         case 12:
         {
-            insert_text(&editor, input_text(input), NORMAL);
+            insert_text(&editor, input, NORMAL);
 
             // system("clear");
 
@@ -140,11 +155,9 @@ int main()
         }
         case 13:
         {
-            close_file(&editor);
+            close_file(&editor, input);
 
             // system("clear");
-
-            display_editor(&editor);
 
             break;
         }
@@ -178,15 +191,7 @@ int main()
         }
         case 17:
         {
-            int val;
-
-            while (getchar() != '\n')
-                ;
-
-            scanf("%d", &val);
-
-            while (getchar() != '\n')
-                ;
+            int val = atoi(input);
 
             backspace(&editor, val, NORMAL);
 
@@ -194,6 +199,10 @@ int main()
 
             display_editor(&editor);
             break;
+        }
+        case 18:
+        {
+            return 0;
         }
         }
     }

@@ -54,6 +54,8 @@ typedef struct
 
 } texteditor;
 
+int command_handler(char *input);
+
 void init_editor(texteditor *ptr_editor);
 
 void init_stack(DynamicArrayStack *stack);
@@ -80,19 +82,19 @@ void delete_line(texteditor *editor, int mode);
 
 void free_editor(texteditor *editor);
 
-void move_up(texteditor *editor);
+void move_up(texteditor *editor, int val);
 
-void move_down(texteditor *editor);
+void move_down(texteditor *editor, int val);
 
-void move_left(texteditor *editor);
+void move_left(texteditor *editor, int val);
 
-void move_right(texteditor *editor);
+void move_right(texteditor *editor, int val);
 
-void save_file(texteditor *editor);
+void save_file(texteditor *editor, char *input);
 
-void open_file(texteditor *editor);
+void open_file(texteditor *editor, char *input);
 
-void close_file(texteditor *editor);
+void close_file(texteditor *editor, char *input);
 
 void push(DynamicArrayStack *stack, Action action);
 
