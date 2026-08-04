@@ -239,7 +239,7 @@ void undo(texteditor *editor)
         {
             if (i == action.cursorLine)
             {
-                editor->cur_line=temp;
+                editor->cur_line = temp;
 
                 break;
             }
@@ -247,11 +247,35 @@ void undo(texteditor *editor)
 
             i++;
         }
-        insert_text(editor, action.text);
+        insert_text(editor, action.text, DNR);
 
         action.cursorPos = editor->cur_pos;
 
         action.cursorLine = editor->cur_lineno;
+
+        push(&editor->redo_stack, action);
+    }
+    else if (action.operation == INSERT_TEXT)
+    {
+        int i = 1;
+
+        while (temp)
+        {
+            if (i == action.cursorLine)
+            {
+                editor->cur_line = temp;
+
+                editor->cur_lineno = action.cursorLine;
+
+                break;
+            }
+            temp = temp->next;
+
+            i++;
+        }
+        editor->cur_pos = action.cursorPos + strlen(action.text);
+
+        backspace(editor, strlen(action.text), DNR);
 
         push(&editor->redo_stack, action);
     }
@@ -384,9 +408,36 @@ void redo(texteditor *editor)
             i++;
         }
     }
+    else if (action.operation == INSERT_TEXT)
+    {
+        node *temp = editor->head;
+
+        int i = 1;
+
+        while (temp)
+        {
+            if (i == action.cursorLine)
+            {
+                editor->cur_line = temp;
+
+                editor->cur_lineno = action.cursorLine;
+
+                editor->cur_pos = action.cursorPos;
+
+                break;
+            }
+            temp = temp->next;
+
+            i++;
+        }
+
+        insert_text(editor, action.text, DNR);
+
+        push(&editor->undo_stack, action);
+    }
 }
 
-void insert_text(texteditor *editor, const char *text)
+void insert_text(texteditor *editor, const char *text, int mode)
 {
 
     if (editor->cur_line == NULL)
@@ -422,6 +473,13 @@ void insert_text(texteditor *editor, const char *text)
         printf("new text is too large to fit inside the line\n");
 
         return;
+    }
+
+    if (mode == NORMAL)
+    {
+        Action action = record_action(editor, text, INSERT_TEXT);
+
+        push(&editor->undo_stack, action);
     }
 
     // move everything to right to make space for new text

@@ -70,7 +70,7 @@ void copy(texteditor *editor);
 
 void paste(texteditor *editor);
 
-void insert_text(texteditor *editor, const char *text);
+void insert_text(texteditor *editor, const char *text, int mode);
 
 void backspace(texteditor *editor, int val, int mode);
 

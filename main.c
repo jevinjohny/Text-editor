@@ -130,7 +130,7 @@ int main()
         }
         case 12:
         {
-            insert_text(&editor, input_text(input));
+            insert_text(&editor, input_text(input), NORMAL);
 
             // system("clear");
 
