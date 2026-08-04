@@ -1,4 +1,4 @@
-# 🧠 Terminal Text Editor
+# 🧠 Line Text Editor
 
 ### Command-Based Text Editing System
 A lightweight terminal text editor built in C for creating, viewing, and managing text files through a simple command-driven interface. The project supports line-based editing, cursor movement, undo/redo operations, clipboard actions, and file open/save functionality.
