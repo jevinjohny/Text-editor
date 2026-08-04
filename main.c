@@ -11,12 +11,11 @@ int main()
 
     system("clear");
 
-    printf("Text Editor Commands\n");
-
     while (1)
     {
+        // printf("1. insert new line 2. delete 3. undo 4. redo 5. print 6. move up 7. move down 8. move left 9. move right 10. open 11. save 12. insert text 13. close file 14. copy 15. paste 16. exit 17.backspace\n");
 
-        // printf("1. insert new line\n2. delete\n3. undo\n4. redo\n5. print\n6. move up\n7. move down\n8. move left\n9. move right\n10. open\n11. save\n12. insert text\n13. close file\n14. copy\n15. paste\n16. exit\n");
+        printf("Text Editor Commands\n");
 
         scanf("%d", &option);
 
@@ -29,7 +28,7 @@ int main()
             editor.redo_stack.size = 0;
             insert_line(&editor, input_text(input), NORMAL);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -40,7 +39,7 @@ int main()
             editor.redo_stack.size = 0;
             delete_line(&editor, NORMAL);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -50,7 +49,7 @@ int main()
         {
             undo(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -60,7 +59,7 @@ int main()
         {
             redo(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -68,13 +67,14 @@ int main()
         }
         case 5:
         {
-            // display_editor(&editor);
+            display_editor(&editor);
+            break;
         }
         case 6:
         {
             move_up(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -84,7 +84,7 @@ int main()
         {
             move_down(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -94,7 +94,7 @@ int main()
         {
             move_left(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -104,7 +104,7 @@ int main()
         {
             move_right(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -114,7 +114,7 @@ int main()
         {
             open_file(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -124,7 +124,7 @@ int main()
         {
             save_file(&editor);
 
-            system("clear");
+            // system("clear");
 
             break;
         }
@@ -132,7 +132,7 @@ int main()
         {
             insert_text(&editor, input_text(input));
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -142,7 +142,7 @@ int main()
         {
             close_file(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -152,7 +152,7 @@ int main()
         {
             copy(&editor);
 
-            system("clear");
+            // system("clear");
 
             break;
         }
@@ -160,7 +160,7 @@ int main()
         {
             paste(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -170,7 +170,7 @@ int main()
         {
             free_editor(&editor);
 
-            system("clear");
+            // system("clear");
 
             display_editor(&editor);
 
@@ -178,9 +178,19 @@ int main()
         }
         case 17:
         {
-            backspace(&editor, NORMAL);
+            int val;
 
-            system("clear");
+            while (getchar() != '\n')
+                ;
+
+            scanf("%d", &val);
+
+            while (getchar() != '\n')
+                ;
+
+            backspace(&editor, val, NORMAL);
+
+            // system("clear");
 
             display_editor(&editor);
             break;

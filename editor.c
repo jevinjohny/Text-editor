@@ -51,14 +51,14 @@ void display_editor(texteditor *editor)
         if (temp == editor->cur_line)
         {
             printf(">%3d : %s\n", line++, temp->line);
-            printf("%*c\n",editor->cur_pos+7,'^');
+            printf("%*c\n", editor->cur_pos + 7, '^');
         }
         else
             printf("%4d : %s\n", line++, temp->line);
 
         temp = temp->next;
     }
-    printf("Cursor position : Line %d , coloumn %d\n",editor->cur_lineno,editor->cur_pos);
+    printf("Cursor position : Line %d , coloumn %d\n", editor->cur_lineno, editor->cur_pos);
 }
 
 char *input_text(char *input)
@@ -231,6 +231,30 @@ void undo(texteditor *editor)
 
         push(&editor->redo_stack, action);
     }
+    else if (action.operation == BACKSPACE)
+    {
+        int i = 1;
+
+        while (temp)
+        {
+            if (i == action.cursorLine)
+            {
+                editor->cur_line=temp;
+
+                break;
+            }
+            temp = temp->next;
+
+            i++;
+        }
+        insert_text(editor, action.text);
+
+        action.cursorPos = editor->cur_pos;
+
+        action.cursorLine = editor->cur_lineno;
+
+        push(&editor->redo_stack, action);
+    }
 }
 
 void insert_atfirst(texteditor *editor, const char *text)
@@ -333,11 +357,32 @@ void redo(texteditor *editor)
 
             i++;
         }
-        // printf("Redo delete:\n");
-        // printf("Stored cursorLine = %d\n", action.cursorLine);
-        // printf("Deleting line %d: %s\n",
-        //        editor->cur_lineno,
-        //        editor->cur_line->line);
+    }
+    else if (action.operation == BACKSPACE)
+    {
+        node *temp = editor->head;
+        int i = 1;
+
+        while (temp)
+        {
+            if (i == action.cursorLine)
+            {
+                editor->cur_line = temp;
+
+                editor->cur_lineno = action.cursorLine;
+
+                editor->cur_pos = action.cursorPos;
+
+                backspace(editor, strlen(action.text), DNR);
+
+                push(&editor->undo_stack, action);
+
+                return;
+            }
+            temp = temp->next;
+
+            i++;
+        }
     }
 }
 
@@ -390,25 +435,37 @@ void insert_text(texteditor *editor, const char *text)
     return;
 }
 
-void backspace(texteditor *editor, int mode)
+void backspace(texteditor *editor, int val, int mode)
 {
-    while (getchar() != '\n')
-        ;
-
-    int no_of_char;
-
-    scanf("%d", &no_of_char);
-
-    while (getchar() != '\n')
-        ;
+    int no_of_char = val;
 
     node *temp = editor->cur_line;
 
+    int start = editor->cur_pos - no_of_char;
+
+    if (start < 0)
+    {
+        return;
+    }
+
+    char deleted_text[MAXLEN];
+
+    memcpy(deleted_text, temp->line + start, no_of_char);
+
+    deleted_text[no_of_char] = '\0';
+
+    Action action;
+    if (mode == NORMAL)
+    {
+        action = record_action(editor, deleted_text, BACKSPACE);
+
+        push(&editor->undo_stack, action);
+    }
     int linelen = strlen(temp->line);
 
-    if (editor->cur_pos - no_of_char+1 >0)
+    if (no_of_char <= editor->cur_pos)
     {
-        memmove((temp->line) + (editor->cur_pos) - no_of_char, (temp->line) + (editor->cur_pos), linelen - editor->cur_pos+1);
+        memmove((temp->line) + (editor->cur_pos) - no_of_char, (temp->line) + (editor->cur_pos), linelen - editor->cur_pos + 1);
 
         editor->cur_pos -= no_of_char;
     }
@@ -559,7 +616,7 @@ void move_right(texteditor *editor)
 {
     node *temp = editor->cur_line;
 
-    if (editor->cur_pos != strlen(temp->line) - 1)
+    if (editor->cur_pos < strlen(temp->line))
     {
         editor->cur_pos++;
     }

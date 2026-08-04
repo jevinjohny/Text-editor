@@ -11,6 +11,8 @@
 
 #define INSERT_LINE 1
 #define DELETE_LINE 2
+#define BACKSPACE 3
+#define INSERT_TEXT 4
 
 typedef struct
 {
@@ -70,7 +72,7 @@ void paste(texteditor *editor);
 
 void insert_text(texteditor *editor, const char *text);
 
-void backspace(texteditor *editor, int mode);
+void backspace(texteditor *editor, int val, int mode);
 
 void display_editor(texteditor *editor);
 
